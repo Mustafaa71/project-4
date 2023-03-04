@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_project_4/components/dashboard/add_building_dialog.dart';
 import 'package:flutter_project_4/components/dashboard/appbar_section.dart';
 import 'package:flutter_project_4/components/dashboard/column_section.dart';
-import 'package:flutter_project_4/pages/home_page/building-dashboard/building-one.dart';
+import 'package:flutter_project_4/pages/home_page/building-dashboard/building_one.dart';
 import 'package:flutter_project_4/pages/home_page/building-dashboard/virtual_page.dart';
 import 'package:flutter_project_4/pages/new_renter/add_renter_dashboard.dart';
 
@@ -17,6 +17,23 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   var pageIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    mystreem.stream.listen(
+      (event) {
+        test10.add(event);
+        setState(() {});
+      },
+    );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    mystreem.close();
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_project_4/components/dashboard/horizontal_container.dart';
 import 'package:flutter_project_4/components/dashboard/reusable_renter_dashboard.dart';
 import 'package:flutter_project_4/components/data_table/renter_data_table.dart';
+import 'package:flutter_svprogresshud/flutter_svprogresshud.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class VirtualPage extends StatefulWidget {
@@ -14,6 +15,16 @@ class VirtualPage extends StatefulWidget {
 class _VirtualPageState extends State<VirtualPage> {
   final supabase = Supabase.instance.client;
 
+  Future<String> numberOfRenter() async {
+    final response = await supabase.from('usr').select('id');
+    final result = response.length.toString();
+    return result.toString();
+  }
+
+  gg() {
+    SVProgressHUD.show();
+  }
+
   @override
   Widget build(BuildContext context) {
     return ReusableRenterDashboard(
@@ -23,10 +34,21 @@ class _VirtualPageState extends State<VirtualPage> {
         children: [
           Row(
             children: [
-              const Expanded(
-                child: HorizontalContainer(
-                  info: '30',
-                  title: 'Numbe of Renters',
+              Expanded(
+                child: FutureBuilder<String>(
+                  future: numberOfRenter(),
+                  builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+                    if (snapshot.hasData) {
+                      return HorizontalContainer(
+                        info: snapshot.data!,
+                        title: 'Number of Renters',
+                      );
+                    } else if (snapshot.hasError) {
+                      return Text('Error: ${snapshot.error}');
+                    } else {
+                      return const CircularProgressIndicator.adaptive();
+                    }
+                  },
                 ),
               ),
               Expanded(

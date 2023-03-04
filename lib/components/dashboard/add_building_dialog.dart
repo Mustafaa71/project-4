@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_project_4/components/dashboard/column_section.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AddBuildingDialog extends StatefulWidget {
   const AddBuildingDialog({
@@ -11,6 +12,15 @@ class AddBuildingDialog extends StatefulWidget {
 }
 
 class _AddBuildingDialogState extends State<AddBuildingDialog> {
+  final buildingName = TextEditingController();
+  final supabase = Supabase.instance.client;
+
+  @override
+  void dispose() {
+    buildingName.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -27,8 +37,8 @@ class _AddBuildingDialogState extends State<AddBuildingDialog> {
             Radius.circular(16),
           ),
         ),
-        width: 500,
-        height: 350,
+        width: 400,
+        height: 250,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -41,46 +51,23 @@ class _AddBuildingDialogState extends State<AddBuildingDialog> {
               'Building Number',
               style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: 8.0),
-            SizedBox(
-              width: 300,
-              child: TextFormField(
-                decoration: InputDecoration(
-                  labelText: 'Building Numbe',
-                  hintText: 'Enter the Number of the new building',
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary, width: 2.0),
-                    borderRadius: const BorderRadius.all(
-                      Radius.circular(10),
-                    ),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey.withOpacity(0.5)),
-                    borderRadius: const BorderRadius.all(
-                      Radius.circular(10),
-                    ),
-                  ),
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey.withOpacity(0.5), width: 2.0),
-                    borderRadius: const BorderRadius.all(
-                      Radius.circular(10),
-                    ),
-                  ),
-                ),
-              ),
+            TextField(
+              controller: buildingName,
             ),
-            const SizedBox(height: 24.0),
+            const SizedBox(height: 32.0),
             ElevatedButton(
               onPressed: () {
-                ColumnSection.newBuilding.add('hello');
-                setState(() {});
+                setState(() {
+                  mystreem.sink.add(10);
+                  Navigator.of(context).pop();
+                });
               },
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all<Color>(
                   const Color(0xFF010c80),
                 ),
                 padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                  const EdgeInsets.all(16.0),
+                  const EdgeInsets.all(26.0),
                 ),
               ),
               child: const Text(
@@ -88,10 +75,6 @@ class _AddBuildingDialogState extends State<AddBuildingDialog> {
                 style: TextStyle(color: Colors.white, fontSize: 15.0),
               ),
             ),
-            // for (var i in ColumnSection.newBuilding)
-            //   Builder(
-            //     builder: (context) => Text(i.toString()),
-            //   ),
           ],
         ),
       ),

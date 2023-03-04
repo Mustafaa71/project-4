@@ -24,7 +24,7 @@ class TextFieldContainer extends StatelessWidget {
             controller: controller,
             decoration: const InputDecoration(
               filled: true,
-              fillColor: Color(0xFFd9d9d9),
+              fillColor: Color(0xFFeaeaea),
               border: OutlineInputBorder(
                 borderSide: BorderSide.none,
               ),

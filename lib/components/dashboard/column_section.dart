@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_project_4/pages/auth/sign_in_page.dart';
 
 class ColumnSection extends StatefulWidget {
   const ColumnSection({
@@ -6,14 +9,12 @@ class ColumnSection extends StatefulWidget {
     required this.onFilterChanged,
   });
   final Function(int) onFilterChanged;
-  static List newBuilding = [];
+
   @override
   State<ColumnSection> createState() => _ColumnSectionState();
 }
 
 class _ColumnSectionState extends State<ColumnSection> {
-  int filter = 0;
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -28,10 +29,9 @@ class _ColumnSectionState extends State<ColumnSection> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.asset(
-              'assets/logo-no-background.png',
-              height: 150,
-              fit: BoxFit.cover,
+            InkWell(
+              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const SignInPage())),
+              child: Image.network('https://img.icons8.com/fluency/512/dashboard-layout.png', width: 100, height: 100),
             ),
             const SizedBox(height: 48),
             Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -39,51 +39,57 @@ class _ColumnSectionState extends State<ColumnSection> {
                 'General',
                 style: TextStyle(color: Color(0xFFb6b6b6), fontSize: 20, fontWeight: FontWeight.bold),
               ),
+              const SizedBox(height: 12),
               InkWell(
                 onTap: () {
                   widget.onFilterChanged(0);
                 },
-                child: const Text(
-                  '   🤖 Dashboard',
-                  style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.w600),
+                child: Row(
+                  children: [
+                    Image.network('https://img.icons8.com/dusk/512/bot.png', height: 30.0, width: 30.0),
+                    const SizedBox(width: 12),
+                    const Text(
+                      'Dashboard',
+                      style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold),
+                    ),
+                  ],
                 ),
               ),
             ]),
             const SizedBox(height: 32),
             Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'Buildings',
-                  style: TextStyle(
-                    color: Color(0xFFb6b6b6),
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 20.0),
-                DropdownButton(
-                  items: const [
-                    DropdownMenuItem(value: 0, child: Text('Dashboard')),
-                    DropdownMenuItem(value: 1, child: Text('Available Appartment')),
-                    DropdownMenuItem(value: 2, child: Text('Add New Renter')),
-                  ],
-                  hint: const Text('Building - 1'),
-                  onChanged: (value) {
-                    setState(
-                      () {
-                        if (value == 0) {
-                          widget.onFilterChanged(0);
-                        } else if (value == 1) {
-                          widget.onFilterChanged(1);
-                        } else if (value == 2) {
-                          widget.onFilterChanged(2);
-                        }
-                      },
+              children: () {
+                List<DropdownButton<String>> dropdownButtons = [];
+                for (var e in test10) {
+                  List<DropdownMenuItem<String>> dropdownMenuItems = [];
+                  for (var option in DropdownMenuItemList) {
+                    dropdownMenuItems.add(
+                      DropdownMenuItem(
+                        value: option,
+                        child: Text(option),
+                      ),
                     );
-                  },
-                ),
-              ],
+                  }
+                  dropdownButtons.add(
+                    DropdownButton(
+                      items: dropdownMenuItems,
+                      hint: const Text('Building '),
+                      onChanged: (selectedOption) {
+                        setState(() {
+                          if (selectedOption == 'Dashboard') {
+                            widget.onFilterChanged(0);
+                          } else if (selectedOption == 'Free Appartment') {
+                            widget.onFilterChanged(1);
+                          } else if (selectedOption == 'Add Renter') {
+                            widget.onFilterChanged(2);
+                          }
+                        });
+                      },
+                    ),
+                  );
+                }
+                return dropdownButtons;
+              }(),
             ),
           ],
         ),
@@ -91,3 +97,9 @@ class _ColumnSectionState extends State<ColumnSection> {
     );
   }
 }
+
+List test10 = [0];
+
+List DropdownMenuItemList = ['Dashboard', 'Free Appartment', 'Add Renter'];
+
+StreamController mystreem = StreamController();

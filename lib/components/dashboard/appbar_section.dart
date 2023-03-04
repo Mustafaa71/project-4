@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_project_4/constant.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-class AppbarSection extends StatelessWidget {
+class AppbarSection extends StatefulWidget {
   const AppbarSection({
     super.key,
   });
+
+  @override
+  State<AppbarSection> createState() => _AppbarSectionState();
+}
+
+class _AppbarSectionState extends State<AppbarSection> {
+  final supabase = Supabase.instance.client;
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +30,23 @@ class AppbarSection extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
+          Row(
+            children: [
+              const Text(
+                '',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(width: 8.0),
+              Image.asset(
+                'assets/logo-no-background.png',
+                height: 150,
+                fit: BoxFit.cover,
+              ),
+            ],
+          ),
           Container(
             padding: const EdgeInsets.all(8.0),
             decoration: const BoxDecoration(color: Color(0xFFf5f5f5)),
@@ -34,22 +59,6 @@ class AppbarSection extends StatelessWidget {
                 style: TextStyle(fontSize: 20),
               ),
             ]),
-          ),
-          Row(
-            children: [
-              const Text('User Name', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-              const SizedBox(width: 8.0),
-              Container(
-                decoration: const BoxDecoration(
-                  color: Color(0xFFd9d9d9),
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(50.0),
-                  ),
-                ),
-                width: 40.0,
-                height: 40.0,
-              ),
-            ],
           ),
         ],
       ),
